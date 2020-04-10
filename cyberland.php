@@ -43,7 +43,6 @@ function get($board)
     global $password;
     
     if (isset($_GET["num"])) {
-        echo "kek";
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);        
         if (isset($_GET["thread"])) {
             $sql = "SELECT * FROM $board WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?;";        
