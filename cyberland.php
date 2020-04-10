@@ -20,7 +20,7 @@ function post($board)
                 $s->bindParam(2, $_POST["replyTo"], PDO::PARAM_INT);
             }    
             else {
-                $sql = "INSERT INTO offtopic (content) VALUES (?);";
+                $sql = "INSERT INTO $board (content) VALUES (?);";
                 $s = $conn->prepare($sql);
             }    
             $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
@@ -51,7 +51,7 @@ function get($board)
             $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
             $s->bindParam(3, $_GET["num"], PDO::PARAM_INT);
         } else {
-            $sql = "SELECT * FROM offtopic ORDER BY id DESC LIMIT ?;";
+            $sql = "SELECT * FROM $board ORDER BY id DESC LIMIT ?;";
             $s = $conn->prepare($sql);
             $s->bindParam(1, $_GET["num"], PDO::PARAM_INT);        
         }         
