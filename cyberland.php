@@ -18,20 +18,17 @@ function post($board)
     echo $st;
     if ($st > 0) {
         echo "Please go away.";
-        exit;
+    } elseif (!isset($_POST["content"])) {
+        echo "Fuck off.";   
     } else {
-        if (isset($_POST["content"])) {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $sql = "INSERT INTO ".$board. "(content, replyTo) VALUES (?,?);";
-            $s = $conn->prepare($sql);
-            $s->bindParam(2, isset($_POST["replyTo"]) ? $_POST["replyTo"] : 0, PDO::PARAM_INT);
-            $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
-            $s->execute();
-            $r = $s->fetch();
-            echo $r;
-        } else {
-            echo "Fuck off.";
-        }
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        $sql = "INSERT INTO ".$board. "(content, replyTo) VALUES (?,?);";
+        $s = $conn->prepare($sql);
+        $s->bindParam(2, isset($_POST["replyTo"]) ? $_POST["replyTo"] : 0, PDO::PARAM_INT);
+        $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
+        $s->execute();
+        $r = $s->fetch();
+        echo $r;
     }   
 } 
 
