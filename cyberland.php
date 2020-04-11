@@ -13,6 +13,12 @@ function post($board)
     global $username;
     global $password;
 
+    // fuck you spamfag (not gonna name you either ;] )
+    $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
+    if (in_array($_SERVER["REMOTE_ADDR"]), $torNodes) {
+        echo "Get lost.";
+        exit;
+    }
     $rl = new RateLimit();
     $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
     echo $st;
