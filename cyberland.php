@@ -1,4 +1,6 @@
 <?php
+require_once("RateLimit.php");
+
 $servername = "localhost";
 $username   = "cyberland";
 // PASSWORD REDACTED
@@ -11,9 +13,12 @@ function post($board)
     global $username;
     global $password;
 
-    if (isset($_POST["content"])) {
-        if (strlen($_POST["content"]) < 5000) {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $rl = new RateLimit();
+    $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
+    if ($st>0) {
+        header('HTTP/1.0 403 Forbidden');
+    } else { 
+        if (isset($_POST["content"])) {
             if (isset($_POST["replyTo"])) {
                 $sql = "INSERT INTO $board (content, replyTo) VALUES (?,?);";
                 $s = $conn->prepare($sql);
@@ -28,12 +33,12 @@ function post($board)
             $r = $s->fetch();
             echo $r;
             $s->close();
-            $conn->close();        
+            $conn->close();
         } else {
             echo "Fuck off.";
-        }    
-    } 
-}
+        }
+    }   
+} 
 
 function get($board)
 {
