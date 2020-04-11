@@ -29,11 +29,12 @@ function post($board)
     } else {
         $reply = isset($_POST["replyTo"]) ? intval($_POST["replyTo"]) : 0;
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        $sql = "INSERT INTO ".$board. "(content, replyTo, bumpCount) VALUES (?,?,?);";
+        $sql = "INSERT INTO ".$board. "(content, replyTo, bumpCount, time) VALUES (?,?,?,?);";
         $s = $conn->prepare($sql);
-        $s->bindParam(3, 0, PDO::PARAM_INT);
-        $s->bindParam(2, $reply, PDO::PARAM_INT);
-        $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
+        $s->bindParam(4, date("d/m/y (D) H:i:s"), PDO::PARAM_STR);
+        $s->bindParam(3, 0                      , PDO::PARAM_INT);
+        $s->bindParam(2, $reply                 , PDO::PARAM_INT);
+        $s->bindParam(1, $_POST["content"]      , PDO::PARAM_STR);
         $s->execute();
         echo $s->fetch();
         
@@ -73,12 +74,14 @@ function get($board)
     $s->execute();
     $r = $s->fetchAll();
     $a = array();
+    // Why is this here again?
     foreach ($r as $result) {
         $result_aa = [
-            "id" => $result["id"],
-            "content" => $result["content"],
-            "replyTo" => $result["replyTo"],
+            "id"        => $result["id"],
+            "content"   => $result["content"],
+            "replyTo"   => $result["replyTo"],
             "bumpCount" => $result["bumpCount"],
+            "time"      => $result["time"],
         ];
         array_push($a, $result_aa);
     }
