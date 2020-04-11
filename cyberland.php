@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/vendor/autoload.php';
 require_once("RateLimit.php");
 
 $servername = "localhost";
@@ -15,7 +16,7 @@ function post($board)
 
     // fuck you spamfag (not gonna name you either ;] )
     $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
-    if (in_array($_SERVER["REMOTE_ADDR"]), $torNodes) {
+    if (in_array($_SERVER["REMOTE_ADDR"], $torNodes)) {
         echo "Get lost.";
         exit;
     }
@@ -44,11 +45,10 @@ function get($board)
     global $dbname;
     global $username;
     global $password;
-    
     if (isset($_GET["num"])) 
         $num = $_GET["num"];
     else 
-        $num = 50
+        $num = 50;    
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);        
     if (isset($_GET["thread"])) {
         $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?;";        
@@ -59,8 +59,8 @@ function get($board)
     } else {
         $sql = "SELECT * FROM ".$board." ORDER BY id DESC LIMIT ?;";
         $s = $conn->prepare($sql);
-        $s->bindParam(1, $num, PDO::PARAM_INT);        
-    }         
+        $s->bindParam(1, $num, PDO::PARAM_INT);
+    }
     $s->execute();
     $r = $s->fetchAll();
     $a = array();
