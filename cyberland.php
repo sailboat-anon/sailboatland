@@ -1,4 +1,4 @@
-<?php
+ SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'<?php
 require_once("RateLimit.php");
 
 $servername = "localhost";
@@ -27,14 +27,23 @@ function post($board)
     } elseif (!isset($_POST["content"])) {
         echo "Fuck off.";   
     } else {
+        $reply = isset($_POST["replyTo"]) ? intval($_POST["replyTo"]) : 0;
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        $sql = "INSERT INTO ".$board. "(content, replyTo) VALUES (?,?);";
+        $sql = "INSERT INTO ".$board. "(content, replyTo, bumpCount) VALUES (?,?,?);";
         $s = $conn->prepare($sql);
-        $s->bindParam(2, isset($_POST["replyTo"]) ? $_POST["replyTo"] : 0, PDO::PARAM_INT);
+        $s->bindParam(3, 0, PDP::PARAM_STR);
+        $s->bindParam(2, $reply, PDO::PARAM_INT);
         $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
         $s->execute();
-        $r = $s->fetch();
-        echo $r;
+        echo $s->fetch();
+        
+        // If the reply wasn't to a board itself, bump the associated reply
+        if ($reply != 0) {
+            $s = $conn->prepare("UPDATE " . $board . " SET bumpCount = bumpCount + 1 WHERE id = ?;"
+            $s->bindParam(1, $reply, PDO::PARAM_INT);
+            $s->execute();
+            echo $s->fetch();
+        }
     }   
 } 
 
@@ -51,13 +60,13 @@ function get($board)
         $num = 50
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);        
     if (isset($_GET["thread"])) {
-        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?;";        
+        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?;";        
         $s = $conn->prepare($sql);
         $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(3, $num, PDO::PARAM_INT);
     } else {
-        $sql = "SELECT * FROM ".$board." ORDER BY id DESC LIMIT ?;";
+        $sql = "SELECT * FROM ".$board." ORDER BY bumpCount DESC LIMIT ?;";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $num, PDO::PARAM_INT);        
     }         
@@ -69,6 +78,7 @@ function get($board)
             "id" => $result["id"],
             "content" => $result["content"],
             "replyTo" => $result["replyTo"],
+            "bumpCount" => $result["bumpCount"],
         ];
         array_push($a, $result_aa);
     }
