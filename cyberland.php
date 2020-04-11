@@ -31,7 +31,7 @@ function post($board)
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $sql = "INSERT INTO ".$board. "(content, replyTo, bumpCount) VALUES (?,?,?);";
         $s = $conn->prepare($sql);
-        $s->bindParam(3, 0, PDP::PARAM_STR);
+        $s->bindParam(3, 0, PDP::PARAM_INT);
         $s->bindParam(2, $reply, PDO::PARAM_INT);
         $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
         $s->execute();
