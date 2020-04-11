@@ -15,25 +15,26 @@ function post($board)
 
     $rl = new RateLimit();
     $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
-    if ($st>0) {
-        header('HTTP/1.0 403 Forbidden');
-    } else { 
+    echo $st;
+    if ($st > 0) {
+        echo "Please go away.";
+        exit;
+    } else {
         if (isset($_POST["content"])) {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             if (isset($_POST["replyTo"])) {
-                $sql = "INSERT INTO $board (content, replyTo) VALUES (?,?);";
+                $sql = "INSERT INTO ".$board. "(content, replyTo) VALUES (?,?);";
                 $s = $conn->prepare($sql);
                 $s->bindParam(2, $_POST["replyTo"], PDO::PARAM_INT);
             }    
             else {
-                $sql = "INSERT INTO $board (content) VALUES (?);";
+                $sql = "INSERT INTO ".$board." (content) VALUES (?);";
                 $s = $conn->prepare($sql);
             }    
             $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
             $s->execute();
             $r = $s->fetch();
             echo $r;
-            $s->close();
-            $conn->close();
         } else {
             echo "Fuck off.";
         }
@@ -50,13 +51,13 @@ function get($board)
     if (isset($_GET["num"])) {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);        
         if (isset($_GET["thread"])) {
-            $sql = "SELECT * FROM $board WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?;";        
+            $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?;";        
             $s = $conn->prepare($sql);
             $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
             $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
             $s->bindParam(3, $_GET["num"], PDO::PARAM_INT);
         } else {
-            $sql = "SELECT * FROM $board ORDER BY id DESC LIMIT ?;";
+            $sql = "SELECT * FROM ".$board." ORDER BY id DESC LIMIT ?;";
             $s = $conn->prepare($sql);
             $s->bindParam(1, $_GET["num"], PDO::PARAM_INT);        
         }         
@@ -72,7 +73,5 @@ function get($board)
             array_push($a, $result_aa);
         }
         echo json_encode($a);
-        $s->close();
-        $conn->close();
     }
 }

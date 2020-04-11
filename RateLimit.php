@@ -4,28 +4,30 @@ Predis\Autoloader::register();
 
 class RateLimit {
     private $redis;
-    const RATE_LIMIT_SECS = 60; // allow 1 request every x seconds
+    const RATE_LIMIT = 60; // allow 1 request every x seconds
 
     public function __construct() {
         $this->redis = new Predis\Client([
             'scheme' => 'tcp',
-            'host'   => 'localhost', // or the server IP on which Redix is running
-            'port'   => 6380
+            'host'   => 'localhost',
+            'port'   => 6379
         ]);
     }
 
-    /**
-     * Returns the number of seconds to wait until the next time the IP is allowed
-     * @param ip {String}
-     */
     public function getSleepTime($ip) {
         $value = $this->redis->get($ip);
         if(empty($value)) {
-            // if the key doesn't exists, we insert it with the current datetime, and an expiration in seconds
-            $this->redis->set($ip, time(), self::RATE_LIMIT_SECS*1000);
+
+            $this->redis->set($ip, time()+self::RATE_LIMIT);
             return 0;
         } 
-        return self::RATE_LIMIT_SECS - (time() - intval(strval($value)));
-    } // getSleepTime
+        $t = self::RATE_LIMIT - (time() - intval(strval($value))) - 60;
+        if($t <= 0) {
+            $this->redis->del($ip);
+            return 0;
+        } else {
+            return $t;
+        }
+    }
+}
 
-} // class RateLimit
