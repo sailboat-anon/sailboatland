@@ -39,30 +39,32 @@ function get($board)
     global $username;
     global $password;
     
-    if (isset($_GET["num"])) {
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);        
-        if (isset($_GET["thread"])) {
-            $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?;";        
-            $s = $conn->prepare($sql);
-            $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
-            $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
-            $s->bindParam(3, $_GET["num"], PDO::PARAM_INT);
-        } else {
-            $sql = "SELECT * FROM ".$board." ORDER BY id DESC LIMIT ?;";
-            $s = $conn->prepare($sql);
-            $s->bindParam(1, $_GET["num"], PDO::PARAM_INT);        
-        }         
-        $s->execute();
-        $r = $s->fetchAll();
-        $a = array();
-        foreach ($r as $result) {
-            $result_aa = [
-                "id" => $result["id"],
-                "content" => $result["content"],
-                "replyTo" => $result["replyTo"],
-            ];
-            array_push($a, $result_aa);
-        }
-        echo json_encode($a);
+    if (isset($_GET["num"])) 
+        $num = $_GET["num"];
+    else 
+        $num = 50
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);        
+    if (isset($_GET["thread"])) {
+        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY id DESC LIMIT ?;";        
+        $s = $conn->prepare($sql);
+        $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
+        $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
+        $s->bindParam(3, $num, PDO::PARAM_INT);
+    } else {
+        $sql = "SELECT * FROM ".$board." ORDER BY id DESC LIMIT ?;";
+        $s = $conn->prepare($sql);
+        $s->bindParam(1, $num, PDO::PARAM_INT);        
+    }         
+    $s->execute();
+    $r = $s->fetchAll();
+    $a = array();
+    foreach ($r as $result) {
+        $result_aa = [
+            "id" => $result["id"],
+            "content" => $result["content"],
+            "replyTo" => $result["replyTo"],
+        ];
+        array_push($a, $result_aa);
     }
+    echo json_encode($a);
 }

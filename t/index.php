@@ -2,6 +2,6 @@
 include("../cyberland.php");
 if (isset($_POST["content"])) {
     post("tech");
-} else if (isset($_GET["num"])) {
+} else {
     get("tech");
 }
