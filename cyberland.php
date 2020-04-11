@@ -1,4 +1,4 @@
- SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'<?php
+<?php
 require_once("RateLimit.php");
 
 $servername = "localhost";
