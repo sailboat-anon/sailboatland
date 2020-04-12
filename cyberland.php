@@ -7,7 +7,7 @@ $username   = "cyberland";
 // PASSWORD REDACTED
 $dbname     = "cyberland";
 
-function post($board)
+function post(string $board): void
 {
     global $servername;
     global $dbname;
@@ -26,11 +26,11 @@ function post($board)
     if ($st > 0) {
         echo "Please go away.";
     } elseif (!isset($_POST["content"])) {
-        echo "Fuck off.";   
+        echo "Fuck off.";
     } else {
-        $reply = isset($_POST["replyTo"]) ? intval($_POST["replyTo"]) : 0;
-        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        $sql = "INSERT INTO ".$board. "(content, replyTo, bumpCount, time) VALUES (?,?,?,?);";
+        $reply = intval($_POST["replyTo"] ?? 0);
+        $conn = new PDO("mysql:host={$servername};dbname={$dbname}", $username, $password);
+        $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
         $s = $conn->prepare($sql);
         $s->bindParam(4, date("d/m/y (D) H:i:s"), PDO::PARAM_STR);
         $s->bindParam(3, 0                      , PDO::PARAM_INT);
@@ -38,52 +38,50 @@ function post($board)
         $s->bindParam(1, $_POST["content"]      , PDO::PARAM_STR);
         $s->execute();
         echo $s->fetch();
-        
+
         // If the reply wasn't to a board itself, bump the associated reply
         if ($reply != 0) {
-            $s = $conn->prepare("UPDATE " . $board . " SET bumpCount = bumpCount + 1 WHERE id = ?;"
+            $s = $conn->prepare("UPDATE {$board} SET bumpCount = bumpCount + 1 WHERE id = ?");
             $s->bindParam(1, $reply, PDO::PARAM_INT);
             $s->execute();
             echo $s->fetch();
         }
-    }   
-} 
+    }
+}
 
-function get($board)
+function get(string $board): void
 {
     global $servername;
     global $dbname;
     global $username;
     global $password;
-    if (isset($_GET["num"])) 
-        $num = $_GET["num"];
-    else 
-        $num = 50;    
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);        
+
+    $num = intval($_GET['num'] ?? 50);
+
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     if (isset($_GET["thread"])) {
-        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?;";        
+        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(3, $num, PDO::PARAM_INT);
     } else {
-        $sql = "SELECT * FROM ".$board." ORDER BY bumpCount DESC LIMIT ?;";
+        $sql = "SELECT * FROM {$board} ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $num, PDO::PARAM_INT);
     }
     $s->execute();
     $r = $s->fetchAll();
-    $a = array();
+    $a = [];
     // Why is this here again?
     foreach ($r as $result) {
-        $result_aa = [
+        $a[] = [
             "id"        => $result["id"],
             "content"   => $result["content"],
             "replyTo"   => $result["replyTo"],
             "bumpCount" => $result["bumpCount"],
             "time"      => $result["time"],
         ];
-        array_push($a, $result_aa);
     }
     echo json_encode($a);
 }
