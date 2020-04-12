@@ -3,7 +3,7 @@ require __DIR__ . '/vendor/autoload.php';
 require_once("RateLimit.php");
 
 $servername = "localhost";
-$username   = "cyberland";
+$username   = "cybersql";
 // PASSWORD REDACTED
 $dbname     = "cyberland";
 
@@ -31,9 +31,11 @@ function post(string $board): void
         $reply = intval($_POST["replyTo"] ?? 0);
         $conn = new PDO("mysql:host={$servername};dbname={$dbname}", $username, $password);
         $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
+        $timeztamp = date("Y-m-d H:i:s");
+        $repto = 0;
         $s = $conn->prepare($sql);
-        $s->bindParam(4, date("d/m/y (D) H:i:s"), PDO::PARAM_STR);
-        $s->bindParam(3, 0                      , PDO::PARAM_INT);
+        $s->bindParam(4, $timeztamp   					, PDO::PARAM_STR);
+        $s->bindParam(3, $repto     						, PDO::PARAM_INT);
         $s->bindParam(2, $reply                 , PDO::PARAM_INT);
         $s->bindParam(1, $_POST["content"]      , PDO::PARAM_STR);
         $s->execute();
