@@ -4,7 +4,7 @@ require_once("RateLimit.php");
 
 $servername = "localhost";
 $username   = "cybersql";
-$password   = 'q*DIdZp091b3jA1YtYu@J*q$';
+// PASSWORD REDACTED
 $dbname     = "cyberland";
 
 function post(string $board): void
