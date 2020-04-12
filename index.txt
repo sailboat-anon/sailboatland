@@ -19,3 +19,6 @@ Questions
 #########
 Q: How do I do anything?
 A: check ./tut.txt, It'll give you the basic lowdown on retrieving and posting things
+
+Q: What?
+A: >hurrrr get post request go hur dur
