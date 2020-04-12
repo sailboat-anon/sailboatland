@@ -14,7 +14,7 @@ function post(string $board): void
     global $username;
     global $password;
 
-    // fuck you spamfag (not gonna name you either ;] )
+    // Fuck you spamfag (not gonna name you either ;] )
     $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
     if (in_array($_SERVER["REMOTE_ADDR"], $torNodes)) {
         echo "Get lost.";
