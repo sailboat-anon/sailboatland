@@ -18,7 +18,7 @@ start by making your own client to post/read posts
 >how i do that?
 http://cyberland2.club/tut.txt
 
->im done making a client, how can i help build the backend?
+>im done making a client, how can i be a productive member of this project?
 fork -> commit to your fork -> make PR from your fork master to base repo master
 
 >your shit sucks
