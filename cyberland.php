@@ -3,9 +3,17 @@ require __DIR__ . '/vendor/autoload.php';
 require_once("RateLimit.php");
 $db_config = parse_ini_file("config/db.conf");
 
+$servername = $db_config["servername"];
+$dbname     = $db_config["dbname"];
+$username   = $db_config["username"];
+$password   = $db_config["password"];
+
 function post(string $board): void
 {
-    global $db_config;
+    global $servername;
+    global $dbname;
+    global $username;
+    global $password;
 
     // Fuck you spamfag (not gonna name you either ;] )
     $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
@@ -24,15 +32,15 @@ function post(string $board): void
         exit;
     } else {
         $reply = intval($_POST["replyTo"] ?? 0);
-        $conn = new PDO("mysql:host={$db_config->username};dbname={$db_config->dbname}", $db_config->username, $db_config->password);
+        $conn = new PDO("mysql:host={$username};dbname={$dbname}", $username, $password);
         $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
         $timeztamp = date("Y-m-d H:i:s");
         $repto = 0;
         $s = $conn->prepare($sql);
-        $s->bindParam(4, $timeztamp		        , PDO::PARAM_STR);
-        $s->bindParam(3, $repto		            , PDO::PARAM_INT);
-        $s->bindParam(2, $reply                 , PDO::PARAM_INT);
-        $s->bindParam(1, $_POST["content"]      , PDO::PARAM_STR);
+        $s->bindParam(4, $timeztamp,        PDO::PARAM_STR);
+        $s->bindParam(3, $replyTo,          PDO::PARAM_INT);
+        $s->bindParam(2, $repto,            PDO::PARAM_INT);
+        $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
         $s->execute();
         echo $s->fetch();
 
@@ -55,7 +63,7 @@ function get(string $board): void
 
     $num = intval($_GET['num'] ?? 50);
 
-    $conn = new PDO("mysql:host=$db_config->servername;dbname=$db_config->dbname", $db_config->username, $db_config->password);
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     if (isset($_GET["thread"])) {
         $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
