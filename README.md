@@ -21,5 +21,11 @@ http://cyberland2.club/tut.txt
 >im done making a client, how can i help build the backend?
 fork -> commit to your fork -> make PR from your fork master to base repo master
 
+>your shit sucks
+https://github.com/yur3i/cyberland/issues
+
+>im not able to fish (enhancement requests)
+https://github.com/yur3i/cyberland/issues
+
 >im ready for my masters class, wut do?
 setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes
