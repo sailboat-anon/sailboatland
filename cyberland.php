@@ -36,8 +36,10 @@ function post(string $board): void
         $timeztamp = date("Y-m-d H:i:s");
         $repto = 0;
         $s = $conn->prepare($sql);
-        $s->bindParam(4, $timeztamp		        , PDO::PARAM_STR);
-        $s->bindParam(3, $repto		            , PDO::PARAM_INT);
+        $s->bindParam(4, $timeztamp		          , PDO::PARAM_STR);
+        $s->bindParam(3, $repto		            	, PDO::PARAM_INT);
+        $s->bindParam(4, $timeztamp   					, PDO::PARAM_STR);
+        $s->bindParam(3, $repto     						, PDO::PARAM_INT);
         $s->bindParam(2, $reply                 , PDO::PARAM_INT);
         $s->bindParam(1, $_POST["content"]      , PDO::PARAM_STR);
         $s->execute();
