@@ -17,3 +17,9 @@ start by making your own client to post/read posts
 
 >how i do that?
 http://cyberland2.club/tut.txt
+
+>im done making a client, how can i help build the backend?
+fork -> commit to your fork -> make PR from your fork master to base repo master
+
+>im ready for my masters class, wut do?
+setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes
