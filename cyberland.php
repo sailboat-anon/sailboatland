@@ -23,7 +23,7 @@ function post(string $board): void
     }
     $rl = new RateLimit();
     $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
-    echo $st;
+
     if ($st > 0) {
         header("HTTP/1.0 429 Too Many Requests", TRUE, 429);
         exit;
@@ -35,11 +35,11 @@ function post(string $board): void
         $conn = new PDO("mysql:host={$username};dbname={$dbname}", $username, $password);
         $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
         $timeztamp = date("Y-m-d H:i:s");
-        $repto = 0;
+        $bumpCount = 0;
         $s = $conn->prepare($sql);
         $s->bindParam(4, $timeztamp,        PDO::PARAM_STR);
-        $s->bindParam(3, $replyTo,          PDO::PARAM_INT);
-        $s->bindParam(2, $repto,            PDO::PARAM_INT);
+        $s->bindParam(3, $bumpCount,        PDO::PARAM_INT);
+        $s->bindParam(2, $replyTo,          PDO::PARAM_INT);
         $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
         $s->execute();
         echo $s->fetch();
