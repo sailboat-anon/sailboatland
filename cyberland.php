@@ -7,6 +7,7 @@ $servername = $db_config["servername"];
 $dbname     = $db_config["dbname"];
 $username   = $db_config["username"];
 $password   = $db_config["password"];
+$port       = $db_config["port"];
 
 function post(string $board): void
 {
@@ -14,9 +15,10 @@ function post(string $board): void
     global $dbname;
     global $username;
     global $password;
+    global $port;
 
     // Fuck you spamfag (not gonna name you either ;] )
-    $torNodes  = file("tornodes", FILE_IGNORE_NEW_LINES);
+    $torNodes  = file("../tornodes", FILE_IGNORE_NEW_LINES);
     if (in_array($_SERVER["REMOTE_ADDR"], $torNodes)) {
         header("HTTP/1.0 403 Forbidden", TRUE, 403);
         exit;
@@ -31,8 +33,8 @@ function post(string $board): void
         header("HTTP/1.0 204 No Content", TRUE, 204);
         exit;
     } else {
-        $reply = intval($_POST["replyTo"] ?? 0);
-        $conn = new PDO("mysql:host={$username};dbname={$dbname}", $username, $password);
+        $replyTo = intval($_POST["replyTo"] ?? 0);
+        $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
         $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
         $timeztamp = date("Y-m-d H:i:s");
         $bumpCount = 0;
@@ -45,9 +47,9 @@ function post(string $board): void
         echo $s->fetch();
 
         // If the reply wasn't to a board itself, bump the associated reply
-        if ($reply != 0) {
+        if ($replyTo != 0) {
             $s = $conn->prepare("UPDATE {$board} SET bumpCount = bumpCount + 1 WHERE id = ?");
-            $s->bindParam(1, $reply, PDO::PARAM_INT);
+            $s->bindParam(1, $replyTo, PDO::PARAM_INT);
             $s->execute();
             echo $s->fetch();
         }
@@ -60,16 +62,17 @@ function get(string $board): void
     global $dbname;
     global $username;
     global $password;
+    global $port;
 
     $num = intval($_GET['num'] ?? 50);
 
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password);
     if (isset($_GET["thread"])) {
         $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $_GET["thread"], PDO::PARAM_INT);
         $s->bindParam(2, $_GET["thread"], PDO::PARAM_INT);
-        $s->bindParam(3, $num, PDO::PARAM_INT);
+        $s->bindParam(3, $num,            PDO::PARAM_INT);
     } else {
         $sql = "SELECT * FROM {$board} ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
