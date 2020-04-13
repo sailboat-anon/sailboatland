@@ -5,3 +5,4 @@ if (isset($_POST["content"])) {
 } else {
     get("news");
 }
+?>
