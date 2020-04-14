@@ -1,4 +1,4 @@
-                                                                                                                                                                                   
+```                                                                                                                                                                                   
                                                                                                                                                                bbbbbbbb            
                                      iiii                                                 222222222222222                               lllllll                b::::::b            
                                     i::::i                                               2:::::::::::::::22                             l:::::l                b::::::b            
@@ -22,7 +22,7 @@ a:::::aaaa::::::ap::::::::::::::::pi::::::i ......  c:::::::::::::::::cc::::::::
                 p:::::::p                                                                                                                                                          
                 p:::::::p                                                                                                                                                          
                 ppppppppp                                                                                                                                                          
-                                                                                                                                                                                   
+ ```                                                                                                                                                                                  
 
                                                              
 
@@ -35,7 +35,7 @@ fork -> commit to your fork -> make PR from your fork master to base repo master
 >im ready for my masters class, wut do?
 setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes
 
-
+```
                   .
                 .'|     .8
                .  |    .8:
@@ -54,3 +54,4 @@ setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes
    ---nnnnn_______M___________M______mmnnn
          "-.                          /
   __________"-_______________________/_________
+  ```
