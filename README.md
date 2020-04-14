@@ -30,10 +30,10 @@ a:::::aaaa::::::ap::::::::::::::::pi::::::i ......  c:::::::::::::::::cc::::::::
 Welcome to api.cyberland2.club!
 
 >im done making a client, how can i be a productive member of this project?
-fork -> commit to your fork -> make PR from your fork master to base repo master
+```fork -> commit to your fork -> make PR from your fork master to base repo master```
 
 >im ready for my masters class, wut do?
-setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes
+```setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes```
 
 ```
                   .
