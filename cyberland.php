@@ -17,7 +17,6 @@ function post(string $board): void
     global $password;
     global $port;
 
-    // Fuck you spamfag (not gonna name you either ;] )
     $torNodes  = file("../tornodes", FILE_IGNORE_NEW_LINES);
     if (in_array($_SERVER["REMOTE_ADDR"], $torNodes)) {
         header("HTTP/1.0 403 Forbidden", TRUE, 403);
@@ -66,7 +65,7 @@ function get(string $board): void
 
     $num = intval($_GET['num'] ?? 50);
 
-    $conn = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $password);
+    $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
         $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
         $s = $conn->prepare($sql);
