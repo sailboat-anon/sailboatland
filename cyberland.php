@@ -34,7 +34,7 @@ function post(string $board): void
     } else {
         $replyTo = intval($_POST["replyTo"] ?? 0);
         $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
-        $sql = "INSERT INTO {$board} (content, replyTo) VALUES (?,?,?,?)";
+        $sql = "INSERT INTO {$board} (content, replyTo) VALUES (?,?)";
         $bumpCount = 0;
         $s = $conn->prepare($sql);
         $s->bindParam(2, $replyTo,          PDO::PARAM_INT);
