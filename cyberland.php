@@ -17,8 +17,8 @@ function post(string $board): void
     global $password;
     global $port;
 
-    $torNodes  = file("../tornodes", FILE_IGNORE_NEW_LINES);
-    if (in_array($_SERVER["REMOTE_ADDR"], $torNodes)) {
+    $blacklist  = file("../config/blacklist", FILE_IGNORE_NEW_LINES);
+    if (in_array($_SERVER["REMOTE_ADDR"], $blacklist)) {
         header("HTTP/1.1 403 Forbidden", TRUE, 403);
         exit;
     }
