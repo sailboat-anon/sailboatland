@@ -34,12 +34,9 @@ function post(string $board): void
     } else {
         $replyTo = intval($_POST["replyTo"] ?? 0);
         $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
-        $sql = "INSERT INTO {$board} (content, replyTo, bumpCount, time) VALUES (?,?,?,?)";
-        $timeztamp = date("Y-m-d H:i:s");
+        $sql = "INSERT INTO {$board} (content, replyTo) VALUES (?,?,?,?)";
         $bumpCount = 0;
         $s = $conn->prepare($sql);
-        $s->bindParam(4, $timeztamp,        PDO::PARAM_STR);
-        $s->bindParam(3, $bumpCount,        PDO::PARAM_INT);
         $s->bindParam(2, $replyTo,          PDO::PARAM_INT);
         $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
         $s->execute();
