@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 require_once("RateLimit.php");
-$db_config = parse_ini_file("config/db.conf");
+$db_config = parse_ini_file("config/db.conf")
 
 $servername = $db_config["servername"];
 $dbname     = $db_config["dbname"];
@@ -60,19 +60,19 @@ function get(string $board): void
     global $password;
     global $port;
 
-    $sortOrder_hash = array("bumpCount", "time");
+    $sortOrder_hash = array("bumpCount", "time", "id");
     $sortHierarchy_hash = array("ASC", "DESC");
 
     $num = intval($_GET["num"] ?? 50);
-    $reply_to_thread_id = intval(isset($_GET['thread']) ?? 0);
-    // sort order.  wut do ppl want here?
+    $thread = intval($_GET["thread"] ?? 0);
+
     if (isset($_GET["sortOrder"]) && in_array($_GET["sortOrder"], $sortOrder_hash)) {
         $sortOrder = $_GET["sortOrder"];
     }
     else {
         $sortOrder = "bumpCount";
     }
-    if (isset($_GET["sortHierarchy"]) && in_array($_GET['sortHierarchy'], $sortHierarchy_hash)) {
+    if (isset($_GET["sortHierarchy"]) && in_array(strtoupper($_GET['sortHierarchy']), $sortHierarchy_hash)) {
         $sortHierarchy = $_GET['sortHierarchy'];
     }
     else {
@@ -81,23 +81,15 @@ function get(string $board): void
 
     $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
-        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY ? ? LIMIT ?";
-        $s = $conn->prepare($sql);
-        $s->bindParam(1, $reply_to_thread_id, PDO::PARAM_INT);
-        $s->bindParam(2, $reply_to_thread_id, PDO::PARAM_INT);
-        $s->bindParam(3, $sortOrder,          PDO::PARAM_STR);
-        $s->bindParam(4, $sortHierarchy,      PDO::PARAM_STR);
-        $s->bindParam(5, $num,                PDO::PARAM_INT);
-        print_r($sql);
+        // ugly but bind()ing the variables to this thread screws up the sorting for some reason   
+        $sql = "SELECT * FROM ".$board." WHERE replyTo=".$thread." OR id=".$thread." ORDER BY ".$sortOrder." ".$sortHierarchy." LIMIT ".$num;
     } else {
-        $sql = "SELECT * FROM {$board} ORDER BY ? ? LIMIT ?";
-        $s = $conn->prepare($sql);
-        $s->bindParam(1, $sortOrder,          PDO::PARAM_INT);
-        $s->bindParam(2, $sortHierarchy,      PDO::PARAM_STR);
-        $s->bindParam(3, $num,                PDO::PARAM_INT);
+        $sql = "SELECT * FROM ".$board." ORDER BY ".$sortOrder." ".$sortHierarchy." LIMIT ".$num;
     }
+    $s = $conn->prepare($sql);
     $s->execute();
     $r = $s->fetchAll();
+
     $a = [];
     // Why is this here again?
     foreach ($r as $result) {

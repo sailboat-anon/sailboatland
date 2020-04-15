@@ -15,7 +15,12 @@
                                                              
 
 
-Welcome to api.cyberland2.club!
+Welcome to api.cyberland2.club!  Should work with your legacy cuyberland clients.
+
+NEW FEATURES (4/15/20):
+- We're hosted!  Thanks hostanon!
+- Sorting works.  Sort by id, time, bumpcount in ASC or DESC order.
+- Application-based IP blacklist
 
 >im done making a client, how can i be a productive member of this project?
 ```fork -> commit to your fork -> make PR from your fork master to base repo master```

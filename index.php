@@ -11,7 +11,7 @@ echo "<pre>
                   \/_/                   \/__/                                                                                          
                                                                                              
                   
-      Welcome to api.cyberland2.club!  More to follow.
+      Welcome to api.cyberland2.club!  Now with Sort Order™️!
 
       https://github.com/sailboat-anon/sailboatland
 
