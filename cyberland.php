@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 require_once("RateLimit.php");
-$db_config = parse_ini_file("config/db.conf")
+$db_config = parse_ini_file("config/db.conf");
 
 $servername = $db_config["servername"];
 $dbname     = $db_config["dbname"];
