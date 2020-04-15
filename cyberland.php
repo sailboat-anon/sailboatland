@@ -61,7 +61,7 @@ function get(string $board): void
     global $port;
 
     $num = intval($_GET['num'] ?? 50);
-    $thread_num = intval($_GET['thread'] ?? 0);
+    $thread_num = intval(isset($_GET['thread']) ?? 0);
 
     $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
