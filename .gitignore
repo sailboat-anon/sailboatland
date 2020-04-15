@@ -1,3 +1,5 @@
 /config/
 /vendor/
 .gitignore
+/config/*
+/config/db.conf
