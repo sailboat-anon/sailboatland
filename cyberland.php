@@ -60,20 +60,41 @@ function get(string $board): void
     global $password;
     global $port;
 
-    $num = intval($_GET['num'] ?? 50);
+    $sortOrder_hash = array("bumpCount", "time");
+    $sortHierarchy_hash = array("ASC", "DESC");
+
+    $num = intval($_GET["num"] ?? 50);
     $reply_to_thread_id = intval(isset($_GET['thread']) ?? 0);
+    // sort order.  wut do ppl want here?
+    if (isset($_GET["sortOrder"]) && in_array($_GET["sortOrder"], $sortOrder_hash)) {
+        $sortOrder = $_GET["sortOrder"];
+    }
+    else {
+        $sortOrder = "bumpCount";
+    }
+    if (isset($_GET["sortHierarchy"]) && in_array($_GET['sortHierarchy'], $sortHierarchy_hash)) {
+        $sortHierarchy = $_GET['sortHierarchy'];
+    }
+    else {
+        $sortHierarchy = "DESC";
+    }
 
     $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
-        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY bumpCount DESC LIMIT ?";
+        $sql = "SELECT * FROM ".$board." WHERE replyTo=? OR id=? ORDER BY ? ? LIMIT ?";
         $s = $conn->prepare($sql);
         $s->bindParam(1, $reply_to_thread_id, PDO::PARAM_INT);
         $s->bindParam(2, $reply_to_thread_id, PDO::PARAM_INT);
-        $s->bindParam(3, $num,        PDO::PARAM_INT);
+        $s->bindParam(3, $sortOrder,          PDO::PARAM_STR);
+        $s->bindParam(4, $sortHierarchy,      PDO::PARAM_STR);
+        $s->bindParam(5, $num,                PDO::PARAM_INT);
+        print_r($sql);
     } else {
-        $sql = "SELECT * FROM {$board} ORDER BY bumpCount DESC LIMIT ?";
+        $sql = "SELECT * FROM {$board} ORDER BY ? ? LIMIT ?";
         $s = $conn->prepare($sql);
-        $s->bindParam(1, $num, PDO::PARAM_INT);
+        $s->bindParam(1, $sortOrder,          PDO::PARAM_INT);
+        $s->bindParam(2, $sortHierarchy,      PDO::PARAM_STR);
+        $s->bindParam(3, $num,                PDO::PARAM_INT);
     }
     $s->execute();
     $r = $s->fetchAll();
