@@ -19,17 +19,17 @@ function post(string $board): void
 
     $torNodes  = file("../tornodes", FILE_IGNORE_NEW_LINES);
     if (in_array($_SERVER["REMOTE_ADDR"], $torNodes)) {
-        header("HTTP/1.0 403 Forbidden", TRUE, 403);
+        header("HTTP/1.1 403 Forbidden", TRUE, 403);
         exit;
     }
     $rl = new RateLimit();
     $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
 
     if ($st > 0) {
-        header("HTTP/1.0 429 Too Many Requests", TRUE, 429);
+        header("HTTP/1.1 429 Too Many Requests", TRUE, 429);
         exit;
     } elseif (!isset($_POST["content"])) {
-        header("HTTP/1.0 204 No Content", TRUE, 204);
+        header("HTTP/1.1 204 No Content", TRUE, 204);
         exit;
     } else {
         $replyTo = intval($_POST["replyTo"] ?? 0);
