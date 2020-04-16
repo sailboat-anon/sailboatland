@@ -81,7 +81,7 @@ function get(string $board): void
 
     $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
     if (isset($_GET["thread"])) {
-        // ugly but bind()ing the variables to this thread screws up the sorting for some reason   
+        // ugly but bindParaming()ing the variables to this string screws up the sorting for some PHP reason   
         $sql = "SELECT * FROM ".$board." WHERE replyTo=".$thread." OR id=".$thread." ORDER BY ".$sortOrder." ".$sortHierarchy." LIMIT ".$num;
     } else {
         $sql = "SELECT * FROM ".$board." ORDER BY ".$sortOrder." ".$sortHierarchy." LIMIT ".$num;

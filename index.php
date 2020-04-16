@@ -29,7 +29,7 @@ This will get y number of posts from the off topic board that reply to post numb
 
 curl https://api.cyberland2.club/o/?thread=x&num=y
 
-You can sort using sortOrder (values: "bumpCount", "time", "id") in ascending or descending order using sortHierarchy (values: "ASC", "DESC").
+You can sort using sortOrder (values: \"bumpCount\", \"time\", \"id\") in ascending or descending order using sortHierarchy (values: \"ASC\", \"DESC\").
 
 *** SORTING
 If I wanted to get all posts on /t/, sorted by bumpcount I would do this:
@@ -38,6 +38,8 @@ curl https://api.cyberland2.club/t/?sortOrder=bumpCount
 This would get you all the oldest posts first:
 curl https://api.cyberland2.club/t/?sortOrder=time&sortHierarchy=ASC
 
+*** WHO ARE YOU ANON, and what's the name of your custom client?
+https://api.cyberland2.club/whoami
 
                 ,_
                 I~
@@ -46,6 +48,7 @@ curl https://api.cyberland2.club/t/?sortOrder=time&sortHierarchy=ASC
               / || \
             ,'  |'  \
          .-'.-==|/_--'
-         `--'-------'  </pre>
+         `--'-------'  
+         </pre>
 ";
 ?>

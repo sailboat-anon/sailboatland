@@ -20,7 +20,8 @@ https://github.com/sailboat-anon/sailboatland
 NEW FEATURES (4/15/20):
 - We're hosted!  Thanks hostanon!
 - Sorting works.  Sort by id, time, bumpcount in ASC or DESC order.
-- Application-based IP blacklist
+*** WHO ARE YOU ANON, and what's the name of your custom client?
+https://api.cyberland2.club/whoami
 
 >im done making a client, how can i be a productive member of this project?
 ```fork -> commit to your fork -> make PR from your fork master to base repo master```
