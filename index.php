@@ -39,7 +39,7 @@ This would get you all the oldest posts first:
 curl https://api.cyberland2.club/t/?sortOrder=time&sortHierarchy=ASC
 
 *** WHO ARE YOU ANON, and what's the name of your custom client?
-https://api.cyberland2.club/whoami
+https://api.cyberland2.club/whoami/
 
                 ,_
                 I~

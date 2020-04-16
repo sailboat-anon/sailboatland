@@ -21,7 +21,7 @@ NEW FEATURES (4/15/20):
 - We're hosted!  Thanks hostanon!
 - Sorting works.  Sort by id, time, bumpcount in ASC or DESC order.
 *** WHO ARE YOU ANON, and what's the name of your custom client?
-https://api.cyberland2.club/whoami
+https://api.cyberland2.club/whoami/
 
 >im done making a client, how can i be a productive member of this project?
 ```fork -> commit to your fork -> make PR from your fork master to base repo master```
@@ -52,6 +52,8 @@ If I wanted to get all posts on /t/, sorted by bumpcount I would do this:
 
 This would get you all the oldest posts first:
 ```curl https://api.cyberland2.club/t/?sortOrder=time&sortHierarchy=ASC```
+
+
 
 
 ```
