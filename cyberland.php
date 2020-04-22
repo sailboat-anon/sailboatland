@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
+include __DIR__ . '/config/naughty.php'; // bad word filter
 require_once("RateLimit.php");
 $db_config = parse_ini_file("config/db.conf");
 
@@ -8,6 +9,8 @@ $dbname     = $db_config["dbname"];
 $username   = $db_config["username"];
 $password   = $db_config["password"];
 $port       = $db_config["port"];
+
+use sailboats\sanitizeText;
 
 function post(string $board): void
 {
@@ -24,6 +27,7 @@ function post(string $board): void
     }*/
     $rl = new RateLimit();
     $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
+    $sanitize = new sanitizeText();
 
     if ($st > 0) {
         header("HTTP/1.1 429 Too Many Requests", TRUE, 429);
@@ -38,7 +42,7 @@ function post(string $board): void
         $bumpCount = 0;
         $s = $conn->prepare($sql);
         $s->bindParam(2, $replyTo,          PDO::PARAM_INT);
-        $s->bindParam(1, $_POST["content"], PDO::PARAM_STR);
+        $s->bindParam(1, $sanitize->profanity($_POST["content"]), PDO::PARAM_STR);
         $s->execute();
         echo $s->fetch();
 
@@ -62,6 +66,7 @@ function get(string $board): void
 
     $sortOrder_hash = array("bumpCount", "time", "id");
     $sortHierarchy_hash = array("ASC", "DESC");
+    $sanitize = new sanitizeText();
 
     $num = intval($_GET["num"] ?? 50);
     $thread = intval($_GET["thread"] ?? 0);
@@ -95,7 +100,7 @@ function get(string $board): void
     foreach ($r as $result) {
         $a[] = [
             "id"        => $result["id"],
-            "content"   => $result["content"],
+            "content"   => $sanitize->profanity($result["content"]),
             "replyTo"   => $result["replyTo"],
             "bumpCount" => $result["bumpCount"],
             "time"      => $result["time"],

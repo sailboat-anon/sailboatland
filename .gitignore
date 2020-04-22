@@ -3,3 +3,4 @@
 .gitignore
 /config/*
 /config/db.conf
+vendor/*
