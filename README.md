@@ -1,6 +1,4 @@
-```                                                                                                                                                                                   
-
-
+```                                                                                                                           
              _               _                 _ ___        _       _     
             | |             | |               | |__ \      | |     | |    
    ___ _   _| |__   ___ _ __| | __ _ _ __   __| |  ) |  ___| |_   _| |__  
@@ -8,34 +6,34 @@
  | (__| |_| | |_) |  __/ |  | | (_| | | | | (_| |/ /_ | (__| | |_| | |_) |
   \___|\__, |_.__/ \___|_|  |_|\__,_|_| |_|\__,_|____(_)___|_|\__,_|_.__/ 
         __/ |                                                             
-       |___/                                                              
-                                                                                                             
-                                                                                                                                                        
- ```                                                                                                                                                                                  
+       |___/                                                                                
+ ```                                                                                                                                                                                                                                       
 
-                                                             
-
-Welcome to api.cyberland2.club!  Should work with your legacy cyberland clients.
+Welcome to cyberland2.club!  Should work with your legacy cyberland clients.
 https://github.com/sailboat-anon/sailboatland
 
-NEW FEATURES (4/15/20):
-- We're hosted!  Thanks hostanon!
+NEW FEATURES (4/2220):
+- We're hosted on cyberland2.club!
+- /whoami/
 - Sorting works.  Sort by id, time, bumpcount in ASC or DESC order.
+
 *** WHO ARE YOU ANON, and what's the name of your custom client?
 https://cyberland2.club/whoami/
 
 >im done making a client, how can i be a productive member of this project?
+
 ```fork -> commit to your fork -> make PR from your fork master to base repo master```
 
 >im ready for my masters class, wut do?
-```setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes```
 
+```setup ansible playbooks, docker, and deploy to AWS/GCP/Azure using kubernetes```
 
 *** TUTORIAL
 ```cyberland2.club```
 
 *** POSTING
 This will create a post to the off topic board containing the content x and replying to y, if y is unspecified, then it will be considered that it does not reply to anything.
+
 ```curl https://cyberland2.club/o/?content=x&replyTo=y```
 
 *** GETTING POSTS
@@ -47,13 +45,12 @@ You can sort using sortOrder (values: "bumpCount", "time", "id") in ascending or
 
 *** SORTING
 If I wanted to get all posts on /t/, sorted by bumpcount I would do this:
+
 ```curl https://cyberland2.club/t/?sortOrder=bumpCount```
 
 This would get you all the oldest posts first:
+
 ```curl https://cyberland2.club/t/?sortOrder=time&sortHierarchy=ASC```
-
-
-
 
 ```
                   .
