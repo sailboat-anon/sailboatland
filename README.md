@@ -14,11 +14,9 @@ https://github.com/sailboat-anon/sailboatland
 
 NEW FEATURES (4/2220):
 - We're hosted on cyberland2.club!
-- /whoami/
 - Sorting works.  Sort by id, time, bumpcount in ASC or DESC order.
 
 *** WHO ARE YOU ANON, and what's the name of your custom client?
-https://cyberland2.club/whoami/
 
 >im done making a client, how can i be a productive member of this project?
 
