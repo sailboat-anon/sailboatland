@@ -24,6 +24,27 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `cyberland` /*!40100 DEFAULT CHARACTER 
 USE `cyberland`;
 
 --
+-- Table structure for table `boards`
+--
+
+DROP TABLE IF EXISTS `boards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `boards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `slug` varchar(45) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `charLimit` int(11) NOT NULL,
+  `posts` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `slug_UNIQUE` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `c`
 --
 
@@ -43,15 +64,6 @@ CREATE TABLE `c` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `c`
---
-
-LOCK TABLES `c` WRITE;
-/*!40000 ALTER TABLE `c` DISABLE KEYS */;
-/*!40000 ALTER TABLE `c` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `clients`
 --
 
@@ -69,15 +81,6 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `clients`
---
-
-LOCK TABLES `clients` WRITE;
-/*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-/*!40000 ALTER TABLE `clients` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `images`
@@ -117,27 +120,6 @@ CREATE TABLE `news` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
---
--- Table structure for table `s`
---
-
-DROP TABLE IF EXISTS `s`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `s` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `content` varchar(5000) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `replyTo` int(11) unsigned DEFAULT '0',
-  `bumpCount` int(11) unsigned DEFAULT '0',
-  `time` datetime DEFAULT CURRENT_TIMESTAMP,
-  `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `modified_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
 --
 -- Table structure for table `tech`
 --
@@ -155,9 +137,8 @@ CREATE TABLE `tech` (
   `modified_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `users`
@@ -177,3 +158,15 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `SECONDARY` (`user_agent`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-04-22 21:17:00
