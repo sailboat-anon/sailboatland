@@ -36,7 +36,7 @@ function post(string $board): void
         header("HTTP/1.1 204 No Content", TRUE, 204);
         exit;
     } else {
-        $replyTo = intval($_POST["replyTo"] ?? 0);
+        $replyTo = $_POST['replyTo'] ?? $_POST['thread'] ?? 0;
         $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
         $sql = "INSERT INTO {$board} (content, replyTo) VALUES (?,?)";
         $bumpCount = 0;
@@ -67,9 +67,10 @@ function get(string $board): void
     $sortOrder_hash = array("bumpCount", "time", "id");
     $sortHierarchy_hash = array("ASC", "DESC");
     $sanitize = new sanitizeText();
-
-    $num = intval($_GET["num"] ?? 50);
-    $thread = intval($_GET["thread"] ?? 0);
+    
+    $thread = $_GET['replyTo'] ?? $_GET['thread'] ?? 0;
+    $num = intval($_GET["num"] ?? 50);  if ($num > 50) { $num = 50; }
+    $thread = intval($thread ?? 0);
 
     if (isset($_GET["sortOrder"]) && in_array($_GET["sortOrder"], $sortOrder_hash)) {
         $sortOrder = $_GET["sortOrder"];
@@ -85,7 +86,7 @@ function get(string $board): void
     }
 
     $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
-    if (isset($_GET["thread"])) {
+    if (isset($_GET["thread"]) || isset($_GET['replyTo'])) {
         // ugly but bindParaming()ing the variables to this string screws up the sorting for some PHP reason   
         $sql = "SELECT * FROM ".$board." WHERE replyTo=".$thread." OR id=".$thread." ORDER BY ".$sortOrder." ".$sortHierarchy." LIMIT ".$num;
     } else {
