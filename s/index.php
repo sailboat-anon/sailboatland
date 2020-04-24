@@ -1,7 +1,7 @@
 <?php
 namespace sailboats;
 $endpoint = 'https://api.cyberland2.club';
-$db_config = parse_ini_file('/config/db.conf');
+$db_config = parse_ini_file('../config/db.conf');
 $federatedKey = $db_config['federatedKey'];
 $federatedUser = $db_config['federatedUser'];
 
