@@ -1,0 +1,12 @@
+; cyberland server db config file
+
+[mysql]
+servername = "127.0.0.1";
+username   = "sailboatsfloat";
+password   = "helmsalee";
+dbname     = "cyberland";
+port	   = "3306";
+
+[api.cyberland.club]
+federatedUser = "cyberland-server-20";
+federatedKey  = "mnKMBN#Ioj!OIU!LNJSdkjJKHS@@"; 
