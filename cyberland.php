@@ -69,7 +69,7 @@ function get(string $board): void
     $sanitize = new sanitizeText();
     
     $thread = $_GET['replyTo'] ?? $_GET['thread'] ?? 0;
-    $num = intval($_GET["num"] ?? 50);  if ($num > 50) { $num = 50; }
+    $num = intval($_GET["num"] ?? 1000);  if ($num > 1000) { $num = 1000; }
     $thread = intval($thread ?? 0);
 
     if (isset($_GET["sortOrder"]) && in_array($_GET["sortOrder"], $sortOrder_hash)) {
