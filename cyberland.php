@@ -42,7 +42,7 @@ function post(string $board): void
         $bumpCount = 0;
         $s = $conn->prepare($sql);
         $s->bindParam(2, $replyTo,          PDO::PARAM_INT);
-        $s->bindParam(1, $sanitize->profanity($_POST["content"]), PDO::PARAM_STR);
+        @$s->bindParam(1, $sanitize->profanity($_POST["content"]), PDO::PARAM_STR);
         $s->execute();
         echo $s->fetch();
 

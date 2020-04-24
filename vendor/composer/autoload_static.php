@@ -7,16 +7,32 @@ namespace Composer\Autoload;
 class ComposerStaticInit018ba1ba38b8e34af312d11fc0078c71
 {
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Snipe\\BanBuilder\\' => 17,
+        ),
         'P' => 
         array (
             'Predis\\' => 7,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Snipe\\BanBuilder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/snipe/banbuilder/src',
+        ),
         'Predis\\' => 
         array (
             0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
     );
 
