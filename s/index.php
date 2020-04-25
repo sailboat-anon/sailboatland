@@ -14,15 +14,10 @@ else { $sb->get(); }
 class sharedBoard {
 	function get() {
         global $endpoint;
-        if (isset($_GET['replyTo'])) {
-            $thread = $_GET['replyTo']; 
-        }
-        else{
-            $thread = $_GET['thread'];
-        }
+        if (isset($_GET['replyTo'])) { $thread = $_GET['replyTo']; }
+        else { $thread = $_GET['thread']; }
 
-        $limit = intval($_GET['num'] ?? 50);  if ($limit > 50) { $limit = 50; }
-        $thread = intval($thread ?? 0);
+        $limit = intval($_GET['num'] ?? 1000);  if ($limit > 1000) { $limit = 1000; }
 
         $url = $endpoint . '/s/?replyTo=' . $thread . '&num=' . $limit;
         $c = curl_init();
@@ -36,15 +31,12 @@ class sharedBoard {
 
 	function post() {
         global $endpoint, $federatedUser, $federatedKey;
-        if (isset($_POST['replyTo'])) {
-            $thread = $_POST['replyTo']; 
-        }
-        else{
-            $thread = $_POST['thread'];
-        }
-        $thread = intval($thread ?? 0);
+        if (!isset($_POST['content']) || empty($_POST['content'])) { header('HTTP/1.1 400 Bad Request', TRUE, 400); exit; }
+        if (isset($_GET['replyTo'])) { $thread = $_GET['replyTo']; }
+        else { $thread = $_GET['thread']; }
+        if (!is_numeric($thread)) { $thread = 0; }
+        
         $auth_token = null;
-        if(!isset($_POST['content'])) { echo 'Cyberland Server Error: add content to sharedboard post.'; exit; }
         
         else { // get authoriation token
             $auth_payload = array(
