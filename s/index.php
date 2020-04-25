@@ -31,7 +31,12 @@ class sharedBoard {
 
 	function post() {
         global $endpoint, $federatedUser, $federatedKey;
-        $thread = $_POST['replyTo'] ?? $_POST['thread'];
+        if (isset($_POST['replyTo'])) {
+            $thread = $_POST['replyTo']; 
+        }
+        else{
+            $thread = $_POST['thread'];
+        }
         $thread = intval($thread ?? 0);
         $auth_token = null;
         if(!isset($_POST['content'])) { echo 'Cyberland Server Error: add content to sharedboard post.'; exit; }
