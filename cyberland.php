@@ -29,7 +29,7 @@ function post(string $board): void
     $st = $rl->getSleepTime($_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER["REMOTE_ADDR"]);
     $sanitize = new sanitizeText();
 
-    if ($st > 0) {
+    if ($st > 0 && ($board != 's')) { // let api.cyberland2.club provide the 429
         header("HTTP/1.1 429 Too Many Requests", TRUE, 429);
         exit;
     } elseif (!isset($_POST["content"])) {
