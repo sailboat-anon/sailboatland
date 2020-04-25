@@ -83,18 +83,23 @@ class sharedBoard {
         // cannot resend headers (401 Unauthorized, for example); technically the cyberland server gives a 200 (request from client successful)
         // however api.cyberland2.club might be giving a different response code, so we will serve that in a JSON response
         if ($httpcode == 200) {
-            echo(json_encode(array(
+
+            /*echo(json_encode(array(
                 'code'      =>  200,
                 'msg'       =>  'HTTP/1.1 200 OK',
                 'results'   =>  $body,
-            )));
+            ))); */
         }
         elseif ($httpcode == 401) {          
-            echo(json_encode(array(
+           /* echo(json_encode(array(
                 'code'      =>  401,
                 'msg'       =>  'HTTP/1.1 401 Unauthorized',
                 'results'   =>  null,
-            )));
+            )));*/
+        }
+        elseif ($httpcode == 429) {
+            header_remove(); 
+            header('HTTP/1.1 429 Too Many Requests', TRUE, 429);
         }
     }
 }
