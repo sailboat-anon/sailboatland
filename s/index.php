@@ -14,11 +14,11 @@ else { $sb->get(); }
 class sharedBoard {
 	function get() {
         global $endpoint;
-        if (isset($_POST['replyTo'])) {
-            $thread = $_POST['replyTo']; 
+        if (isset($_GET['replyTo'])) {
+            $thread = $_GET['replyTo']; 
         }
         else{
-            $thread = $_POST['thread'];
+            $thread = $_GET['thread'];
         }
 
         $limit = intval($_GET['num'] ?? 50);  if ($limit > 50) { $limit = 50; }
