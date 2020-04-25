@@ -14,7 +14,7 @@ else { $sb->get(); }
 class sharedBoard {
 	function get() {
         global $endpoint;
-        $thread = $_GET['replyTo'] ?? $_GET['thread'] ?? 0;
+        $thread = $_GET['replyTo'] ?? $_GET['thread'];
 
         $limit = intval($_GET['num'] ?? 50);  if ($limit > 50) { $limit = 50; }
         $thread = intval($thread ?? 0);
@@ -31,7 +31,7 @@ class sharedBoard {
 
 	function post() {
         global $endpoint, $federatedUser, $federatedKey;
-        $thread = $_POST['replyTo'] ?? $_POST['thread'] ?? 0;
+        $thread = $_POST['replyTo'] ?? $_POST['thread'];
         $thread = intval($thread ?? 0);
         $auth_token = null;
         if(!isset($_POST['content'])) { echo 'Cyberland Server Error: add content to sharedboard post.'; exit; }
@@ -80,7 +80,7 @@ class sharedBoard {
         curl_close($c);
 
         header_remove(); 
-        switch ($httpdcode) {
+        switch ($httpcode) {
             case 200:
                 header('HTTP/1.1 200 OK', TRUE, 200);
                 break;
