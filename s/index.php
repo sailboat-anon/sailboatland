@@ -79,27 +79,33 @@ class sharedBoard {
         $httpcode = curl_getinfo($c, CURLINFO_HTTP_CODE);
         curl_close($c);
 
-        // context on the logic below
-        // cannot resend headers (401 Unauthorized, for example); technically the cyberland server gives a 200 (request from client successful)
-        // however api.cyberland2.club might be giving a different response code, so we will serve that in a JSON response
-        if ($httpcode == 200) {
-
-            /*echo(json_encode(array(
-                'code'      =>  200,
-                'msg'       =>  'HTTP/1.1 200 OK',
-                'results'   =>  $body,
-            ))); */
-        }
-        elseif ($httpcode == 401) {          
-           /* echo(json_encode(array(
-                'code'      =>  401,
-                'msg'       =>  'HTTP/1.1 401 Unauthorized',
-                'results'   =>  null,
-            )));*/
-        }
-        elseif ($httpcode == 429) {
-            header_remove(); 
-            header('HTTP/1.1 429 Too Many Requests', TRUE, 429);
+        header_remove(); 
+        switch ($httpdcode) {
+            case 200:
+                header('HTTP/1.1 200 OK', TRUE, 200);
+                break;
+            case 401:
+                header('HTTP/1.1 401 Unauthorized', TRUE, 401);
+                break;
+            case 429:
+                header('HTTP/1.1 429 Too Many Requests', TRUE, 429);
+                break;
+            case 404:
+                header('HTTP/1.1 404 Not Found', TRUE, 404);
+                break;
+            case 500:
+                header('HTTP/1.1 500 Internal Server Error', TRUE, 500);
+                break;
+            case 400:
+                header('HTTP/1.1 400 Bad Request', TRUE, 400);
+                break;
+            case 406:
+                header('HTTP/1.1 406 Not Acceptable', TRUE, 406);
+                break;
+            default:
+                header('HTTP/1.1 418 Ya Dun Goofed', TRUE, 418);
+                break;
+            }
         }
     }
 }
