@@ -35,7 +35,7 @@ class sharedBoard {
         if (isset($_POST['replyTo'])) { $thread = $_POST['replyTo']; }
         else { $thread = $_POST['thread']; }
         if (!is_numeric($thread)) { $thread = 0; }
-        
+    
         $auth_token = null;
         
         if (!is_null($auth_token)) {}

@@ -26,7 +26,7 @@ function post(string $board): void
         exit;
     }*/
     $rl = new RateLimit();
-    $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
+    $st = $rl->getSleepTime($_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER["REMOTE_ADDR"]);
     $sanitize = new sanitizeText();
 
     if ($st > 0) {
