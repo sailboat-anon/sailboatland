@@ -38,6 +38,7 @@ class sharedBoard {
         
         $auth_token = null;
         
+        if (!isnull($auth_token)) {}
         else { // get authoriation token
             $auth_payload = array(
                 'username'  =>  $federatedUser,
