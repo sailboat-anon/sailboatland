@@ -12,9 +12,8 @@
 Welcome to cyberland2.club!  Should work with your legacy cyberland clients.
 https://github.com/sailboat-anon/sailboatland
 
-NEW FEATURES (4/2220):
-- We're hosted on cyberland2.club!
-- Sorting works.  Sort by id, time, bumpcount in ASC or DESC order.
+NEW FEATURES (4/24/20):
+- We're federated!  https://github.com/sailboat-anon/api/wiki
 
 *** WHO ARE YOU ANON, and what's the name of your custom client?
 
