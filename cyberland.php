@@ -60,7 +60,7 @@ function post(string $board): void
         $sql = "INSERT INTO {$board} (content, replyTo) VALUES (?,?)";
         $bumpCount = 0;
         $s = $conn->prepare($sql);
-        $s->bindParam(2, $replyTo,          PDO::PARAM_INT);
+        $s->bindParam(2, $thread,          PDO::PARAM_INT);
         @$s->bindParam(1, $sanitize->profanity($_POST["content"]), PDO::PARAM_STR);
         $s->execute();
         echo $s->fetch();
@@ -68,7 +68,7 @@ function post(string $board): void
         // If the reply wasn't to a board itself, bump the associated reply
         if ($replyTo != 0) {
             $s = $conn->prepare("UPDATE {$board} SET bumpCount = bumpCount + 1 WHERE id = ?");
-            $s->bindParam(1, $replyTo, PDO::PARAM_INT);
+            $s->bindParam(1, $thread, PDO::PARAM_INT);
             $s->execute();
             echo $s->fetch();
         }
@@ -91,7 +91,7 @@ function get(string $board): void
     else { $thread = $_GET['thread']; }
 
     $num = intval($_GET["num"] ?? 1000);  if ($num > 1000) { $num = 1000; }
-    $thread = intval($thread ?? 0);
+    //$thread = intval($thread ?? 0);
 
     if (isset($_GET["sortOrder"]) && in_array($_GET["sortOrder"], $sortOrder_hash)) {
         $sortOrder = $_GET["sortOrder"];
@@ -107,7 +107,7 @@ function get(string $board): void
     }
 
     $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
-    if (isset($_GET["thread"]) || isset($_GET['replyTo'])) {
+    if (isset($thread)) {
         // ugly but bindParaming()ing the variables to this string screws up the sorting for some PHP reason   
         $sql = "SELECT * FROM ".$board." WHERE replyTo=".$thread." OR id=".$thread." ORDER BY ".$sortOrder." ".$sortHierarchy." LIMIT ".$num;
     } else {
