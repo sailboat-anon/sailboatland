@@ -4,7 +4,7 @@ Predis\Autoloader::register();
 
 class RateLimit {
     private $redis;
-    const RATE_LIMIT = 60; // allow 1 request every x seconds
+    const RATE_LIMIT = 30; // allow 1 request every x seconds
 
     public function __construct() {
         $this->redis = new Predis\Client([
