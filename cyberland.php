@@ -41,7 +41,8 @@ function post(string $board): void
     }*/
     $ip = get_real_ip();
     $rl = new RateLimit();
-    $st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
+    //$st = $rl->getSleepTime($_SERVER["REMOTE_ADDR"]);
+    $st = $rl->getSleepTime($ip); // one last try
 
     $sanitize = new sanitizeText();
 
