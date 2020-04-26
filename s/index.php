@@ -30,12 +30,12 @@ class sharedBoard {
     }
 
 	function post() {
-        global $endpoint, $federatedUser, $federatedKey;
         if (!isset($_POST['content']) || empty($_POST['content'])) { header('HTTP/1.1 400 Bad Request', TRUE, 400); exit; }
         if (isset($_POST['replyTo'])) { $thread = $_POST['replyTo']; }
         else { $thread = $_POST['thread']; }
         if (!is_numeric($thread)) { $thread = 0; }
-    
+        
+        global $endpoint, $federatedUser, $federatedKey;
         $auth_token = null;
         
         if (!is_null($auth_token)) {}

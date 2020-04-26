@@ -37,16 +37,20 @@ function post(string $board): void
     }*/
     $rl = new RateLimit();
     $st = $rl->getSleepTime(getRequestor());
+
     $sanitize = new sanitizeText();
 
-    if ($st > 0 && ($board != 's')) { // let api.cyberland2.club provide the 429
+    if ($st > 0) { // api.cyberland2.club applies ratelimiting to the token holder (cyberland server), not end-user; token would be revoked, causing 401
         header("HTTP/1.1 429 Too Many Requests", TRUE, 429);
         exit;
     } elseif (!isset($_POST["content"])) {
         header("HTTP/1.1 204 No Content", TRUE, 204);
         exit;
     } else {
-        $replyTo = $_POST['replyTo'] ?? $_POST['thread'] ?? 0;
+        if (isset($_POST['replyTo'])) { $thread = $_POST['replyTo']; }
+        else { $thread = $_POST['thread']; }
+        if (!is_numeric($thread)) { $thread = 0; }
+
         $conn = new PDO("mysql:host={$servername};port={$port};dbname={$dbname}", $username, $password);
         $sql = "INSERT INTO {$board} (content, replyTo) VALUES (?,?)";
         $bumpCount = 0;
@@ -78,7 +82,9 @@ function get(string $board): void
     $sortHierarchy_hash = array("ASC", "DESC");
     $sanitize = new sanitizeText();
     
-    $thread = $_GET['replyTo'] ?? $_GET['thread'] ?? 0;
+    if (isset($_GET['replyTo'])) { $thread = $_GET['replyTo']; }
+    else { $thread = $_GET['thread']; }
+
     $num = intval($_GET["num"] ?? 1000);  if ($num > 1000) { $num = 1000; }
     $thread = intval($thread ?? 0);
 
